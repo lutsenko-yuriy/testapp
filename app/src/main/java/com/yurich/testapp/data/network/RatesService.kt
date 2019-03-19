@@ -1,4 +1,4 @@
-package com.yurich.testapp.data
+package com.yurich.testapp.data.network
 
 import io.reactivex.Single
 import retrofit2.http.Field

@@ -1,4 +1,4 @@
-package com.yurich.testapp.data
+package com.yurich.testapp.data.network
 
 import com.google.gson.annotations.SerializedName
 

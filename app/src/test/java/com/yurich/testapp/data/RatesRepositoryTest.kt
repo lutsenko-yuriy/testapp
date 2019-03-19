@@ -1,7 +1,10 @@
 package com.yurich.testapp.data
 
-import com.yurich.testapp.data.RatesRepository.Companion.BASE_CURRENCY
-import com.yurich.testapp.data.RatesRepository.Companion.DEFAULT_RATES
+import com.yurich.testapp.data.RatesRepositoryImpl.Companion.BASE_CURRENCY
+import com.yurich.testapp.data.RatesRepositoryImpl.Companion.DEFAULT_RATES
+import com.yurich.testapp.data.cache.RatesCache
+import com.yurich.testapp.data.network.RatesResponseBody
+import com.yurich.testapp.data.network.RatesService
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
 import org.junit.Before
@@ -18,7 +21,7 @@ class RatesRepositoryTest {
     @Mock
     lateinit var cache: RatesCache
 
-    lateinit var repository: RatesRepository
+    lateinit var repository: RatesRepositoryImpl
 
     lateinit var observer: TestObserver<Map<String, Double>>
 
@@ -32,7 +35,7 @@ class RatesRepositoryTest {
         MockitoAnnotations.initMocks(this)
         `when`(cache.getRates()).thenReturn(Single.just(initialMap))
         observer = TestObserver()
-        repository = RatesRepository(service, cache)
+        repository = RatesRepositoryImpl(service, cache)
     }
 
     @Test

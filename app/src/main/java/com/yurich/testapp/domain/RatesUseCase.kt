@@ -1,6 +1,7 @@
 package com.yurich.testapp.domain
 
 import com.yurich.testapp.data.RatesRepository
+import com.yurich.testapp.domain.trigger.EventTrigger
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton

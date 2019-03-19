@@ -8,7 +8,9 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    NetworkModule::class
+    NetworkModule::class,
+    LocalStorageModule::class,
+    RepositoryModule::class
 ])
 interface AppComponent {
 
