@@ -1,7 +1,7 @@
 package com.yurich.testapp.ui.view
 
+import com.yurich.testapp.ui.presenter.Currency
+
 interface CurrencyView {
-
-    fun displayCurrencies()
-
+    fun displayCurrencies(newCurrencies: List<Currency>)
 }
