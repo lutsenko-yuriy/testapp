@@ -2,7 +2,7 @@ package com.yurich.testapp.data
 
 import com.google.gson.annotations.SerializedName
 
-data class CurrencyResponseBody(
+data class RatesResponseBody(
     @SerializedName("base")
     val base: String,
     @SerializedName("date")
