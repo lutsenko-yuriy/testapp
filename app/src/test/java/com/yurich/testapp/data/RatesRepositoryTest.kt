@@ -26,6 +26,7 @@ class RatesRepositoryTest {
     lateinit var observer: TestObserver<Map<String, Double>>
 
     private val responseMap = mapOf("XYZ" to 2.0)
+    private val cachedMap = mapOf("ABC" to 1.21)
     private val initialMap = mapOf(BASE_CURRENCY to DEFAULT_RATES)
 
     private val responseBody = RatesResponseBody(BASE_CURRENCY, "2019-12-21", responseMap)
@@ -33,7 +34,7 @@ class RatesRepositoryTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        `when`(cache.getRates()).thenReturn(Single.just(initialMap))
+        `when`(cache.getRates()).thenReturn(cachedMap)
         observer = TestObserver()
         repository = RatesRepositoryImpl(service, cache)
     }
@@ -42,7 +43,7 @@ class RatesRepositoryTest {
     fun shouldReturnDataFromNetwork() {
         `when`(service.getRates(BASE_CURRENCY)).thenReturn(Single.just(responseBody))
 
-        repository.getRates().toObservable()
+        repository.getRates()
                 .subscribe(observer)
 
         observer.assertValue(responseMap + initialMap)
@@ -53,10 +54,10 @@ class RatesRepositoryTest {
     fun shouldReturnDataFromLocalStorage() {
         `when`(service.getRates(BASE_CURRENCY)).thenReturn(Single.error(IllegalStateException()))
 
-        repository.getRates().toObservable()
+        repository.getRates()
                 .subscribe(observer)
 
-        observer.assertValue(initialMap)
+        observer.assertValue(cachedMap)
         observer.assertComplete()
     }
 }

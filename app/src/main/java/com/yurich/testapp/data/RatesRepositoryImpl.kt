@@ -14,11 +14,12 @@ class RatesRepositoryImpl @Inject constructor(
     @Suppress("RedundantLambdaArrow")
     override fun getRates() =
             service.getRates(BASE_CURRENCY)
-                    .flatMap {
+                    .map {
                         val newRates = it.rates + (BASE_CURRENCY to DEFAULT_RATES)
                         cache.updateRates(newRates)
+                        newRates
                     }
-                    .onErrorResumeNext(cache.getRates())
+                    .onErrorReturn { cache.getRates() }
 
     companion object {
         const val BASE_CURRENCY = "EUR"

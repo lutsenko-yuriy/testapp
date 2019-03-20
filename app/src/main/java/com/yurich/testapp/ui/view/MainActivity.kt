@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), CurrencyView {
         super.onDestroy()
     }
 
-    override fun displayCurrencies(newCurrencies: List<Currency>) {
+    override fun displayCurrencies(newCurrencies: Map<String, Currency>) {
         adapter.updateCurrencies(newCurrencies)
     }
 }

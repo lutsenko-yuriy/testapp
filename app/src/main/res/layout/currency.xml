@@ -15,6 +15,7 @@
             android:layout_gravity="center_vertical|start"/>
 
     <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/currency_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="12dp"
