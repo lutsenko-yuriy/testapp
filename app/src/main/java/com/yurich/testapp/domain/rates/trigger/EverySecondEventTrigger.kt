@@ -1,4 +1,4 @@
-package com.yurich.testapp.domain.trigger
+package com.yurich.testapp.domain.rates.trigger
 
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit

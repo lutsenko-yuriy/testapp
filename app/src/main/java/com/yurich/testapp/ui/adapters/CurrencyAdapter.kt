@@ -1,11 +1,13 @@
 package com.yurich.testapp.ui.adapters
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yurich.testapp.R
-import com.yurich.testapp.ui.presenter.Currency
+import com.yurich.testapp.domain.Currency
 import kotlinx.android.synthetic.main.currency.view.*
 
 class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>() {
@@ -27,6 +29,24 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
                 notifyItemMoved(position, 0)
             }
         }
+
+        view.currency_value.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val position = viewHolder.adapterPosition
+                if (position in currencies.indices && view.currency_value.isFocused) {
+                    val currency = currencies[position]
+                    listener.onCurrencyChanged(currency.code, s.toString().toDoubleOrNull())
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+        })
+
         return viewHolder
     }
 
@@ -71,7 +91,7 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
         fun bind(currency: Currency) {
             currencyTitle.text = currency.code
             if (!currencyValue.isFocused) {
-                currencyValue.setText(currency.cost.toString())
+                currencyValue.setText(currencyValue.context.getString(R.string.price_format, currency.cost))
             }
         }
     }

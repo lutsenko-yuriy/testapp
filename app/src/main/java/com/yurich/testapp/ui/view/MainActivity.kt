@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.yurich.testapp.R
 import com.yurich.testapp.app.CurrencyApp
 import com.yurich.testapp.ui.adapters.CurrencyAdapter
-import com.yurich.testapp.ui.presenter.Currency
+import com.yurich.testapp.domain.Currency
 import com.yurich.testapp.ui.presenter.CurrencyPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
