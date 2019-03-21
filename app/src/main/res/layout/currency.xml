@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
-             android:orientation="vertical"
              android:layout_width="match_parent"
              android:layout_height="wrap_content">
 
@@ -20,7 +19,8 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:textSize="16sp"
-            tools:text="69.0"
+            tools:text="70.0"
+            android:inputType="numberDecimal"
             android:background="@android:color/transparent"
             android:layout_gravity="center_vertical|end"/>
 

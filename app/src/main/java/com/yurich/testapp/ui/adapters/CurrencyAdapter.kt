@@ -16,7 +16,22 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
         val view = LayoutInflater.from(parent.context).inflate(R.layout.currency, parent, false)
         val viewHolder = CurrencyViewHolder(view)
 
+        view.setOnClickListener {
+            val position = viewHolder.adapterPosition
+
+            // position != NO_POSITION statement is omitted because
+            // it is true if position is among currencies.indices
+            if (position in currencies.indices) {
+                val selectedCurrency = currencies.removeAt(position)
+                currencies.add(0, selectedCurrency)
+                notifyItemMoved(position, 0)
+            }
+        }
         return viewHolder
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
     override fun getItemCount() = currencies.size
@@ -27,16 +42,22 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
         }
     }
 
+    fun addCurrencies(newCurrencies: Collection<Currency>) {
+        currencies.clear()
+        currencies.addAll(newCurrencies)
+        notifyDataSetChanged()
+    }
+
     fun updateCurrencies(newCurrencies: Map<String, Currency>) {
-        if (currencies.size < newCurrencies.size) {
-            currencies.clear()
-            currencies.addAll(newCurrencies.values)
-        } else {
-            for (i in currencies.indices) {
-                val currentCurrencyCode = currencies[i].code
-                if (newCurrencies[currentCurrencyCode] != null) {
-                    currencies[i] = newCurrencies.getValue(currentCurrencyCode)
-                }
+        if (currencies.isEmpty()) {
+            addCurrencies(newCurrencies.values)
+            return
+        }
+
+        for (i in currencies.indices) {
+            val currentCurrencyCode = currencies[i].code
+            if (newCurrencies[currentCurrencyCode] != null) {
+                currencies[i] = newCurrencies.getValue(currentCurrencyCode)
             }
         }
         notifyDataSetChanged()
@@ -44,16 +65,14 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
 
     class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        lateinit var item: Currency
-
         val currencyTitle = itemView.currency_title
         val currencyValue = itemView.currency_value
 
         fun bind(currency: Currency) {
-            this.item = currency
-
             currencyTitle.text = currency.code
-            currencyValue.setText(currency.cost.toString())
+            if (!currencyValue.isFocused) {
+                currencyValue.setText(currency.cost.toString())
+            }
         }
     }
 }

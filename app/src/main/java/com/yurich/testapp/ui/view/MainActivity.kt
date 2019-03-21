@@ -28,11 +28,21 @@ class MainActivity : AppCompatActivity(), CurrencyView {
         list_of_currencies.layoutManager = LinearLayoutManager(this, VERTICAL, false)
 
         adapter = CurrencyAdapter(presenter)
+        adapter.setHasStableIds(true)
         list_of_currencies.adapter = this.adapter
+        list_of_currencies.setHasFixedSize(true)
+
+        savedInstanceState?.let { bundle ->
+            adapter.addCurrencies(bundle.getParcelableArray(CURRENT_CURRENCIES)?.map { it as Currency } ?: emptyList())
+        }
 
         presenter.attachView(this)
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putParcelableArray(CURRENT_CURRENCIES, adapter.currencies.toTypedArray())
+    }
 
     override fun onDestroy() {
         presenter.detachView()
@@ -41,5 +51,9 @@ class MainActivity : AppCompatActivity(), CurrencyView {
 
     override fun displayCurrencies(newCurrencies: Map<String, Currency>) {
         adapter.updateCurrencies(newCurrencies)
+    }
+
+    companion object {
+        const val CURRENT_CURRENCIES = "currentCurrencies"
     }
 }

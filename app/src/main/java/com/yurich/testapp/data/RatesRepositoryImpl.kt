@@ -15,7 +15,7 @@ class RatesRepositoryImpl @Inject constructor(
     override fun getRates() =
             service.getRates(BASE_CURRENCY)
                     .map {
-                        val newRates = it.rates + (BASE_CURRENCY to DEFAULT_RATES)
+                        val newRates = DEFAULT_CURRENCY_RATE + it.rates
                         cache.updateRates(newRates)
                         newRates
                     }
@@ -24,5 +24,6 @@ class RatesRepositoryImpl @Inject constructor(
     companion object {
         const val BASE_CURRENCY = "EUR"
         const val DEFAULT_RATES = 1.0
+        val DEFAULT_CURRENCY_RATE = mapOf(BASE_CURRENCY to DEFAULT_RATES)
     }
 }
