@@ -13,7 +13,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindRepository(repository: RatesRepositoryImpl): RatesRepository
+    abstract fun bindRatesRepository(repository: RatesRepositoryImpl): RatesRepository
 
     @Binds
     @Singleton
