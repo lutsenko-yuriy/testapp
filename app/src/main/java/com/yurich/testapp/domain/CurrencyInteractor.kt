@@ -20,8 +20,9 @@ class CurrencyInteractor @Inject constructor(
                     ratesUseCase.ratesObservable()
             ) { currency: Currency, rates: Map<String, Double> ->
                 rates.mapValues { rate ->
-                    val newCost = rates[currency.code]?.let { secondRate ->
-                        currency.cost?.times(rate.value)?.div(secondRate)
+                    val rate1 = rate.value
+                    val newCost = rates[currency.code]?.let { rate2 ->
+                        currency.cost?.times(rate1)?.div(rate2)
                     }
                     Currency(rate.key, newCost)
                 }
