@@ -24,9 +24,13 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
             // position != NO_POSITION statement is omitted because
             // it is true if position is among currencies.indices
             if (position in currencies.indices) {
-                val selectedCurrency = currencies.removeAt(position)
-                currencies.add(0, selectedCurrency)
+                currencies.removeAt(position).also {
+                    currencies.add(0, it)
+                }
                 notifyItemMoved(position, 0)
+                if (view.parent is RecyclerView) {
+                    (view.parent as RecyclerView).layoutManager?.scrollToPosition(0)
+                }
             }
         }
 
@@ -35,7 +39,7 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
                 val position = viewHolder.adapterPosition
                 if (position in currencies.indices && view.currency_value.isFocused) {
                     val currency = currencies[position]
-                    listener.onCurrencyChanged(currency.code, s.toString().toDoubleOrNull())
+                    listener.onCurrencyChanged(currency.code, s.toString().replace(",", ".").toDoubleOrNull())
                 }
             }
 
@@ -51,7 +55,7 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
     }
 
     override fun getItemId(position: Int): Long {
-        return position.toLong()
+        return currencies[position].code.hashCode().toLong()
     }
 
     override fun getItemCount() = currencies.size
@@ -85,7 +89,7 @@ class CurrencyAdapter(val listener: CurrencyInteractionListener) : RecyclerView.
 
     class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val currencyTitle = itemView.currency_title
+        private val currencyTitle = itemView.currency_title
         val currencyValue = itemView.currency_value
 
         fun bind(currency: Currency) {

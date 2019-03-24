@@ -2,6 +2,7 @@ package com.yurich.testapp.ui.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.yurich.testapp.R
@@ -25,12 +26,15 @@ class MainActivity : AppCompatActivity(), CurrencyView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        list_of_currencies.layoutManager = LinearLayoutManager(this, VERTICAL, false)
+        list_of_currencies.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity, VERTICAL, false)
 
-        adapter = CurrencyAdapter(presenter)
-        adapter.setHasStableIds(true)
-        list_of_currencies.adapter = this.adapter
-        list_of_currencies.setHasFixedSize(true)
+            this@MainActivity.adapter = CurrencyAdapter(presenter)
+            this@MainActivity.adapter.setHasStableIds(true)
+            adapter = this@MainActivity.adapter
+            setHasFixedSize(true)
+            addItemDecoration(DividerItemDecoration(this@MainActivity, VERTICAL))
+        }
 
         savedInstanceState?.let { bundle ->
             adapter.addCurrencies(bundle.getParcelableArray(CURRENT_CURRENCIES)?.map { it as Currency } ?: emptyList())

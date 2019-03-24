@@ -5,4 +5,5 @@ import io.reactivex.Observable
 interface RatesUseCase {
 
     fun ratesObservable(): Observable<Map<String, Double>>
+
 }
