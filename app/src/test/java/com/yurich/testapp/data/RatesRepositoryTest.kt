@@ -36,7 +36,7 @@ class RatesRepositoryTest {
     }
 
     @Test
-    fun shouldReturnDataFromNetwork() {
+    fun `should return data from network`() {
         `when`(service.getRates(BASE_CURRENCY)).thenReturn(Single.just(responseBody))
 
         repository.getRates()
@@ -46,7 +46,7 @@ class RatesRepositoryTest {
     }
 
     @Test
-    fun shouldReturnDataFromLocalStorage() {
+    fun `should return data from local storage`() {
         `when`(service.getRates(BASE_CURRENCY)).thenReturn(Single.error(IllegalStateException()))
 
         repository.getRates()

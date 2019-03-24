@@ -1,6 +1,7 @@
 package com.yurich.testapp.ui.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity(), CurrencyView {
         }
 
         savedInstanceState?.let { bundle ->
+            loading_currencies.visibility = View.GONE
+            list_of_currencies.visibility = View.VISIBLE
             adapter.addCurrencies(bundle.getParcelableArray(CURRENT_CURRENCIES)?.map { it as Currency } ?: emptyList())
         }
 
@@ -54,6 +57,8 @@ class MainActivity : AppCompatActivity(), CurrencyView {
     }
 
     override fun displayCurrencies(newCurrencies: Map<String, Currency>) {
+        loading_currencies.visibility = View.GONE
+        list_of_currencies.visibility = View.VISIBLE
         adapter.updateCurrencies(newCurrencies)
     }
 

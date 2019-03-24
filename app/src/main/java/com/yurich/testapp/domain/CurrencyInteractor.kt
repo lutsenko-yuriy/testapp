@@ -19,12 +19,9 @@ class CurrencyInteractor @Inject constructor(
                     currentChoice.lastCurrencyInput(),
                     ratesUseCase.ratesObservable()
             ) { currency: Currency, rates: Map<String, Double> ->
+                val multiplier = (currency.cost ?: 0.0) / (rates[currency.code] ?: 1.0)
                 rates.mapValues { rate ->
-                    val rate1 = rate.value
-                    val newCost = rates[currency.code]?.let { rate2 ->
-                        (currency.cost ?: 0.0) * rate1 / rate2
-                    }
-                    Currency(rate.key, newCost)
+                    Currency(rate.key, rate.value * multiplier)
                 }
             }
                     .subscribeOn(Schedulers.computation())
